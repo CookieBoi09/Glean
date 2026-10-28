@@ -1,0 +1,11 @@
+.DS_Store
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.xcresult
+*.ipa
+*.dSYM/
+*.dSYM.zip
+__pycache__/
+*.pyc
