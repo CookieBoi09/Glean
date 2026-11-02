@@ -26,6 +26,20 @@ final class SceneFactoryTests: XCTestCase {
         XCTAssertFalse(camera.usesOrthographicProjection)
     }
 
+    func testDefaultModelBoxChamfersFitWithinEveryDimension() throws {
+        let scene = try SceneFactory.makeScene(modelURL: nil)
+        var boxCount = 0
+        SceneFactory.content(in: scene).enumerateChildNodes { node, _ in
+            guard let box = node.geometry as? SCNBox else { return }
+            boxCount += 1
+            let maximumRadius = min(box.width, min(box.height, box.length)) / 2
+            XCTAssertGreaterThanOrEqual(box.chamferRadius, 0)
+            XCTAssertLessThanOrEqual(box.chamferRadius, maximumRadius,
+                "A shallow box must limit its corner radius by its depth, too.")
+        }
+        XCTAssertEqual(boxCount, 4, "The backpack, visor rim, visor, and highlight must all be checked.")
+    }
+
     func testImportedModelIsCenteredAndNormalizedRegardlessOfSourceUnits() throws {
         let source = SCNScene()
         let box = SCNNode(geometry: SCNBox(width: 80, height: 40, length: 20, chamferRadius: 0))

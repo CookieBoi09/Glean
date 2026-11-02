@@ -143,21 +143,23 @@ enum SceneFactory {
         packNode.position = SCNVector3(0, 0.15, -0.55)
         root.addChildNode(packNode)
 
-        let rim = SCNBox(width: 1.08, height: 0.64, length: 0.28, chamferRadius: 0.22)
+        // SceneKit limits chamfers to half the smallest dimension, including depth.
+        // Keep these shallow visor parts within that range during scene creation.
+        let rim = SCNBox(width: 1.08, height: 0.64, length: 0.28, chamferRadius: 0.12)
         rim.chamferSegmentCount = 14
         rim.materials = [material(color: UIColor(red: 0.12, green: 0.16, blue: 0.22, alpha: 1), roughness: 0.28)]
         let rimNode = SCNNode(geometry: rim)
         rimNode.position = SCNVector3(0, 0.4, 0.49)
         root.addChildNode(rimNode)
 
-        let visor = SCNBox(width: 0.96, height: 0.51, length: 0.23, chamferRadius: 0.19)
+        let visor = SCNBox(width: 0.96, height: 0.51, length: 0.23, chamferRadius: 0.10)
         visor.chamferSegmentCount = 16
         visor.materials = [material(color: UIColor(red: 0.47, green: 0.8, blue: 0.91, alpha: 1), metallic: 0.5, roughness: 0.15)]
         let visorNode = SCNNode(geometry: visor)
         visorNode.position = SCNVector3(0, 0.42, 0.62)
         root.addChildNode(visorNode)
 
-        let highlight = SCNBox(width: 0.43, height: 0.085, length: 0.018, chamferRadius: 0.035)
+        let highlight = SCNBox(width: 0.43, height: 0.085, length: 0.018, chamferRadius: 0.008)
         highlight.chamferSegmentCount = 8
         let shine = material(color: UIColor.white.withAlphaComponent(0.85), roughness: 0.1)
         shine.emission.contents = UIColor(white: 0.3, alpha: 1)
